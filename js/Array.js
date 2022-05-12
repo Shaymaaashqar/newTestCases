@@ -1,4 +1,3 @@
-
 function arrayOnly() {
   const array1 = [1, 2, 3, [1, 3]];
   return array1;
@@ -24,28 +23,33 @@ function calculateAvg(subjects = []) {
 
   const highestOptional = [...subjects]
     .filter(({ isRequired }) => !isRequired)
-    .sort((a, b) => b.score / b.max - a.score / a.max)[0] || {score: 0, max: 0};
+    .sort((a, b) => b.score / b.max - a.score / a.max)[0] || { score: 0, max: 0 };
 
-    console.log(required);
-  const avg = (required.total + highestOptional.score) / ((required.base + highestOptional.max)  || 1);
+  const avg = (required.total + highestOptional.score) / (required.base + highestOptional.max || 1);
   return +(avg * 100).toFixed(2);
 }
 
-
-function getTotal(a, b, c) {
+function getTotalOld(a, b, c) {
   let total = 0;
-  
-  if((a === undefined | b === undefined  |  c === undefined) ) {
-  total+=NaN;
+
+  if ((a === undefined) | (b === undefined) | (c === undefined)) {
+    /**
+     * What is this line? you are adding not a number to a number!!
+     * Do you know what it means? it's NaN
+     */
+    total += NaN;
   }
-  if(typeof(a) =="object" && a.total===undefined  ) {
-  a.total=0;
+  if (typeof a == "object" && a.total === undefined) {
+    /**
+     * You don't have to do it
+     */
+    a.total = 0;
   }
-  if(typeof(b) =="object" && b.total===undefined  ) {
-    b.total=0;
+  if (typeof b == "object" && b.total === undefined) {
+    b.total = 0;
   }
-  if(typeof(c) =="object" && c.total===undefined  ) {
-      c.total=0;
+  if (typeof c == "object" && c.total === undefined) {
+    c.total = 0;
   }
   if (a) {
     total += a.total;
@@ -57,8 +61,12 @@ function getTotal(a, b, c) {
   if (c) {
     total += c.total;
   }
-  
-return total;
+
+  return total;
+}
+
+function getTotal(a, b, c) {
+  return (a?.total ?? 0) + (b?.total ?? 0) + (c?.total ?? 0);
 }
 
 exports.calculateAvg = calculateAvg;

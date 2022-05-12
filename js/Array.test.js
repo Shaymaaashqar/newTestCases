@@ -1,4 +1,3 @@
-
 const { arrayOnly, calculateAvg, getTotal } = require("./array");
 const { subjects2, subjects } = require("./fixtures");
 
@@ -39,60 +38,66 @@ describe("Testing the calculateAvg and Total for the passed subjects array of ob
     expect(calculateAvg()).toBe(0);
   });
 
-   test("Something else", () => {
-     expect(calculateAvg([{ isRequired: false, max: 100, score: 90 }])).toBe(90);
-   });
+  test("Something else", () => {
+    expect(calculateAvg([{ isRequired: false, max: 100, score: 90 }])).toBe(90);
+  });
 
-   test("Something else - 1", () => {
-     expect(calculateAvg([{ isRequired: true, max: 100, score: 90 }])).toBe(90);
-   });
+  test("Something else - 1", () => {
+    expect(calculateAvg([{ isRequired: true, max: 100, score: 90 }])).toBe(90);
+  });
 
-   test("Something else - 2", () => {
+  test("Something else - 2", () => {
     expect(calculateAvg([{ isRequired: undefined, max: 100, score: 90 }])).toBe(90);
   });
-  
+
   test("Something else - 3", () => {
     expect(calculateAvg([{ isRequired: true, max: 0, score: 0 }])).toBe(0);
   });
 
   test("Something else - 4", () => {
-    expect(calculateAvg([{ isRequired: true, max:undefined, score: undefined }])).toBe(NaN);
+    expect(calculateAvg([{ isRequired: true, max: undefined, score: undefined }])).toBe(NaN);
   });
-  
-  test("The return value is an Total of subject1", () => {
-    expect(getTotal({total: 0}, {total: 12}, {total: 0})).toBe(12);
-  });
+});
 
-  test("The return value is an Total of subject2", () => {
-    expect(getTotal({total: -12}, {total: 12}, {total:0})).toBe(0);
+describe("Testing the getTotal", () => {
+  test("The return value is the summation of all totals", () => {
+    expect(getTotal({ total: 0 }, { total: 12 }, { total: 0 })).toBe(12);
   });
 
-  test("The return value is an Total of subject3", () => {
-    expect(getTotal({total: -12}, {}, {total:-13})).toBe(-25);
+  test("The return value is the summation of all totals even with negative numbers", () => {
+    expect(getTotal({ total: -12 }, { total: 12 }, { total: 0 })).toBe(0);
   });
 
-  test("The return value is an Total of subject4", () => {
-    expect(getTotal(undefined,{total: 0}, {total: 12})).toBe(NaN);
- });
+  /**
+   * No need!
+   */
+  // test("The return value is an Total of subject3", () => {
+  //   expect(getTotal({ total: -12 }, {}, { total: -13 })).toBe(-25);
+  // });
 
- test("The return value is an Total of subject5", () => {
-  expect(getTotal({}, {total: 12}, {total:1})).toBe(13);
-});
+  /**
+   * NaN is something users mustn't see
+   */
+  // test("The return value is the summation of all totals even when the first param is undefined", () => {
+  //   expect(getTotal(undefined, { total: 0 }, { total: 12 })).toBe(NaN);
+  // });
+  test("The return value is the summation of all totals even when the first param is undefined", () => {
+    expect(getTotal(undefined, { total: 0 }, { total: 12 })).toBe(12);
+  });
 
-test("The return value is an Total of subject6", () => {
-  expect(getTotal({},{},{})).toBe(0);
-});
+  test("The return value is the summation of all totals even when the a param has no total", () => {
+    expect(getTotal({}, { total: 12 }, { total: 1 })).toBe(13);
+  });
 
-test("The return value is an Total of subject7", () => {
-  expect(getTotal(undefined, undefined, undefined)).toBe(NaN);
-});
+  test("The return value is 0 for all empty params", () => {
+    expect(getTotal({}, {}, {})).toBe(0);
+  });
 
-test("The return value is an Total of subject8", () => {
-  expect(getTotal({total: null}, {total: null}, {total:null})).toBe(0);
-});
+  test("The return value is 0 for all undefined params", () => {
+    expect(getTotal(undefined, undefined, undefined)).toBe(0);
+  });
 
-test("The return value is an Total of subject9", () => {
-  expect(getTotal({total: null}, {total: -5}, {total:25})).toBe(20);
-});
-
+  test("The return value is 0 for null totals", () => {
+    expect(getTotal({ total: null }, { total: null }, { total: null })).toBe(0);
+  });
 });
